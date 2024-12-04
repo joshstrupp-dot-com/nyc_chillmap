@@ -1,4 +1,4 @@
-# NYC Chillmap
+# NYC Chillmap 🤙
 
 Welcome to the NYC Chillmap project! 🌳🛋️🗽
 
