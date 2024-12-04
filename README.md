@@ -4,6 +4,9 @@ Welcome to the NYC Chillmap project! 🌳🛋️🗽
 
 New York City is famous for its towering skyscrapers, bustling streets, and vibrant culture. However, amidst the concrete jungle, many overlook the peaceful spots that offer a breath of fresh air, scenic views, and moments of semi-solitude. The NYC Chillmap aims to highlight these hidden gems, making it easier for residents and visitors alike to find serene spots in the city that never sleeps.
 
+<img width="1129" alt="image" src="https://github.com/user-attachments/assets/2235951c-a93f-4d00-95bf-59989755cf46">
+
+
 ## 📍 What is the NYC Chillmap?
 
 Imagine a map of New York City, not as a heatmap showing activity or congestion, but as a Chillmap. In this Chillmap:
