@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <script>
+      L_NO_TOUCH = false;
+      L_DISABLE_3D = false;
+    </script>
+
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <style>
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+    </style>
+    <!-- Load dependencies first -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"
+    />
+    <!-- Custom styles -->
+    <style>
+      /* Custom tooltip styles */
+      .custom-tooltip {
+        background: white;
+        border: 1px solid black;
+        padding: 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+
+    <meta
+      name="viewport"
+      content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <style>
+      #map_cdd24c3f9ff8e8c1db97116e288e2dd2 {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        left: 0%;
+        top: 0%;
+      }
+      .leaflet-container {
+        font-size: 1rem;
+      }
+    </style>
+    <style>
+      .home-button {
+        background-color: white;
+        width: 35px;
+        height: 35px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .home-button:hover {
+        background-color: #f4f4f4;
+      }
+    </style>
+    <!-- Slideshow Box Styles -->
+    <style>
+      .slideshow-container {
+        position: absolute;
+        top: 10px;
+        left: 60px;
+        z-index: 1000;
+        background: white;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        width: 600px;
+        height: auto;
+        padding: 15px;
+      }
+
+      .slide {
+        display: none;
+      }
+
+      .slide.active {
+        display: flex;
+        gap: 35px;
+        align-items: stretch;
+      }
+
+      .slide-content {
+        flex: 1;
+      }
+
+      .slide-image {
+        flex: 1;
+        width: 50%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      .slide-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 16px;
+        font-family: monospace;
+      }
+
+      .slide-text {
+        font-size: 11px;
+        color: #666;
+        font-family: monospace;
+      }
+
+      .slide-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        align-items: center;
+        position: relative;
+      }
+
+      .slide-indicator {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: monospace;
+        font-size: 11px;
+        color: #666;
+      }
+
+      .nav-button {
+        background-color: white;
+        width: 30px;
+        height: 30px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-button:hover {
+        background-color: #f4f4f4;
+      }
+
+      .minimize-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: white;
+        width: 24px;
+        height: 24px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        z-index: 1001;
+        transition: all 0.3s ease;
+      }
+
+      .minimize-button:hover {
+        background-color: #f4f4f4;
+      }
+
+      .minimized-title {
+        display: none;
+        font-family: monospace;
+        font-size: 11px;
+        color: #333;
+        margin-left: 10px;
+        padding-right: 150px;
+      }
+
+      .slideshow-container.minimized {
+        height: 44px;
+        padding: 10px;
+        width: auto;
+        display: flex;
+        align-items: center;
+        background: white;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .slideshow-container.minimized .minimized-title {
+        display: block;
+      }
+
+      .slideshow-container.minimized .slide,
+      .slideshow-container.minimized .slide-nav {
+        display: none;
+      }
+
+      /* Tablet devices */
+      @media screen and (max-width: 768px) {
+        .slideshow-container {
+          width: 90%;
+          max-width: 600px;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 20px;
+          top: auto;
+          padding: 15px;
+        }
+
+        .slide.active {
+          gap: 20px;
+        }
+
+        .slide-image {
+          width: 40%;
+          height: auto;
+          min-height: 120px;
+        }
+
+        .minimized-title {
+          padding-right: 75px;
+        }
+      }
+
+      /* Mobile devices */
+      @media screen and (max-width: 480px) {
+        .slideshow-container {
+          width: 90%;
+          padding: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 15px;
+          top: auto;
+        }
+
+        .slide.active {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .slide-image {
+          width: 100%;
+          height: 120px;
+        }
+
+        .slide-title {
+          font-size: 14px;
+        }
+
+        .slide-text {
+          font-size: 11px;
+          margin-bottom: 5px;
+        }
+
+        .slide-nav {
+          margin-top: 10px;
+        }
+
+        .minimized-title {
+          padding-right: 35px;
+        }
+      }
+    </style>
+    <style>
+      .who-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 999;
+        background-color: white;
+        padding: 6px 12px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: monospace;
+        font-size: 11px;
+        text-decoration: none;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+      }
+      .who-button:hover {
+        background-color: #f4f4f4;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="https://joshstrupp.com" target="_blank" class="who-button"
+      >Who Made This? ↗️</a
+    >
+    <!-- Slideshow Box -->
+    <div class="slideshow-container">
+      <button class="minimize-button" onclick="toggleMinimize()">−</button>
+      <div class="minimized-title">About The Project</div>
+      <div class="slide active">
+        <div class="slide-content">
+          <div class="slide-title">
+            New York City is known for a lot of things.
+          </div>
+          <div class="slide-text">
+            But many see only concrete, trash, rats, and noise pollution. My
+            hypothesis is that there are places in NYC that are peaceful,
+            scenic, and provide moments of semi-solitude. In other words, great
+            places to "chill." Thus, this "<span style="color: #cc5500"
+              >heatmap</span
+            >" is really a "<span style="color: #3636f6">chillmap</span>." Get
+            it? Of course you do.
+          </div>
+        </div>
+        <img src="rat.gif" alt="NYC Skyline" class="slide-image" />
+      </div>
+
+      <div class="slide">
+        <div class="slide-content">
+          <div class="slide-title">How It Works</div>
+          <div class="slide-text">
+            The darker the color, the more "chill" the area. How is "chill"
+            calculated? <br /><br />Great Q. With NYC Open Data, I created a
+            weighted average using five datasets: the tree census, 311 requests,
+            <a
+              href="https://www.nycgovparks.org/sub_your_park/trees_greenstreets/images/NYC_Greenstreets-Green_Infrastructure_for_Stormwater_Management.pdf"
+              target="_blank"
+              >Greenstreets</a
+            >, benches, and gardens. I.e. more 311 complaints about honking and
+            vermon = lower chillscore. More places to sit under a tree = higher
+            chilldscore. <br /><br />You can read more about process and exact
+            weight calculations
+            <a
+              href="https://drive.google.com/file/d/18NaQY_y1rks9vjQtHqUdMeQrVmzlMvuV/view?usp=sharing"
+              target="_blank"
+              >here</a
+            >.
+          </div>
+        </div>
+        <video class="slide-image" autoplay loop muted playsinline>
+          <source src="howitworks_1.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="slide">
+        <div class="slide-content">
+          <div class="slide-title">The Very Chillest</div>
+          <div class="slide-text">
+            So who had the largest chillscore? The area surrounding P.S. 156Q,
+            of course! Aka The Laurelton School. <br /><br />Located deep in
+            Located deep in Queens and, surprisingly, not that far from JFK,
+            this small slice of new york has over 1,000 trees and 27 concrete
+            medians converted into green spaces.
+          </div>
+        </div>
+        <video class="slide-image" autoplay loop muted playsinline>
+          <source src="lauren.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="slide-nav">
+        <button class="nav-button" onclick="changeSlide(-1)">←</button>
+        <div class="slide-indicator">1/3</div>
+        <button class="nav-button" onclick="changeSlide(1)">→</button>
+      </div>
+    </div>
+
+    <div class="folium-map" id="map_cdd24c3f9ff8e8c1db97116e288e2dd2"></div>
+    <!-- Load your map script after the map div -->
+    <script
+      type="module"
+      src="var map_cdd24c3f9ff8e8c1db97116e288e2dd2.js"
+    ></script>
+
+    <!-- Slideshow Navigation Script -->
+    <script>
+      let currentSlide = 0;
+      let isMinimized = false;
+      const slides = document.querySelectorAll(".slide");
+      const container = document.querySelector(".slideshow-container");
+      const minButton = document.querySelector(".minimize-button");
+      const slideIndicator = document.querySelector(".slide-indicator");
+
+      function toggleMinimize() {
+        isMinimized = !isMinimized;
+        container.classList.toggle("minimized");
+        minButton.textContent = isMinimized ? "+" : "−";
+      }
+
+      function changeSlide(direction) {
+        slides[currentSlide].classList.remove("active");
+        currentSlide =
+          (currentSlide + direction + slides.length) % slides.length;
+        slides[currentSlide].classList.add("active");
+        slideIndicator.textContent = `${currentSlide + 1}/3`;
+      }
+    </script>
+  </body>
+</html>
